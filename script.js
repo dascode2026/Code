@@ -1,102 +1,71 @@
-const files = [
-    "data/aba.json",
-    "data/art.json",
-    "data/bs.json",
-    "data/bts.json",
-    "data/edw.json"
-];
-
-const container = document.getElementById("codes-container");
-const search = document.getElementById("search");
-const resultsCount = document.getElementById("results-count");
-
-let allData = [];
+let allCodes = [];
 
 async function loadData() {
 
-    for (const file of files) {
+    const response = await fetch("data.json");
 
-        try {
+    allCodes = await response.json();
 
-            const response = await fetch(file);
-
-            const data = await response.json();
-
-            allData.push(...data);
-
-        } catch (err) {
-
-            console.log(file + " not found");
-
-        }
-    }
-
-    render(allData);
+    render(allCodes);
 }
 
 function render(data) {
 
+    const container = document.getElementById("container");
+
     container.innerHTML = "";
 
-    const modules = {};
+    document.getElementById("resultCount").innerText =
+        "عدد النتائج: " + data.length;
+
+    let groups = {};
 
     data.forEach(item => {
 
-        if (!modules[item.module]) {
-            modules[item.module] = [];
+        if(!groups[item.module]){
+            groups[item.module] = [];
         }
 
-        modules[item.module].push(item);
-
+        groups[item.module].push(item);
     });
 
-    Object.keys(modules).forEach(moduleName => {
+    Object.keys(groups).forEach(module => {
 
-        const section = document.createElement("div");
-        section.className = "module";
+        let section = document.createElement("div");
+
+        section.className = "section";
 
         section.innerHTML = `
-            <div class="module-title">${moduleName}</div>
-            <div class="cards">
-                ${modules[moduleName].map(item => `
-                    <div class="card"
-                         id="${item.module}-${item.code}">
-                        <div class="code">
-                            ${item.code}
-                        </div>
+            <div class="section-title">${module}</div>
 
-                        <div class="desc">
-                            ${item.description}
-                        </div>
-                    </div>
-                `).join("")}
+            <div class="cards">
+
+            ${groups[module].map(item => `
+
+                <div class="card">
+
+                    <div class="code">${item.code}</div>
+
+                    <div class="desc">${item.description}</div>
+
+                </div>
+
+            `).join("")}
+
             </div>
         `;
 
         container.appendChild(section);
-
     });
-
-    resultsCount.textContent =
-        "عدد النتائج: " + data.length;
 }
 
-search.addEventListener("input", () => {
+document
+.getElementById("search")
+.addEventListener("input", function(){
 
-    const q = search.value.trim().toLowerCase();
+    let q = this.value.toLowerCase();
 
-    document
-        .querySelectorAll(".card")
-        .forEach(card => card.classList.remove("highlight"));
-
-    if (!q) {
-
-        render(allData);
-
-        return;
-    }
-
-    const filtered = allData.filter(item =>
+    let result = allCodes.filter(item =>
 
         item.code.toLowerCase().includes(q)
 
@@ -107,16 +76,17 @@ search.addEventListener("input", () => {
         ||
 
         item.module.toLowerCase().includes(q)
+
     );
 
-    render(filtered);
+    render(result);
 
-    setTimeout(() => {
+    setTimeout(()=>{
 
-        const firstCard =
+        let firstCard =
             document.querySelector(".card");
 
-        if (firstCard) {
+        if(firstCard){
 
             firstCard.classList.add("highlight");
 
@@ -124,10 +94,9 @@ search.addEventListener("input", () => {
                 behavior:"smooth",
                 block:"center"
             });
-
         }
 
-    },100);
+    },50);
 });
 
 loadData();
