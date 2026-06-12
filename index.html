@@ -1,38 +1,208 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DAS</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="style.css">
+<title>DAS</title>
+
+<style>
+body{
+font-family:Tahoma,sans-serif;
+background:#f4f6f9;
+margin:0;
+padding:20px;
+}
+
+header{
+position:sticky;
+top:0;
+background:white;
+padding:15px;
+box-shadow:0 2px 10px rgba(0,0,0,.1);
+z-index:1000;
+display:flex;
+gap:10px;
+align-items:center;
+}
+
+h1{
+margin:0;
+color:#0066cc;
+}
+
+#search{
+flex:1;
+padding:12px;
+font-size:16px;
+border:1px solid #ccc;
+border-radius:10px;
+}
+
+.section{
+background:white;
+margin-top:40px;
+padding:20px;
+border-radius:15px;
+box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.section h2{
+margin-top:0;
+color:#0066cc;
+border-bottom:2px solid #eee;
+padding-bottom:10px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th{
+background:#0066cc;
+color:white;
+padding:12px;
+}
+
+td{
+padding:10px;
+border-bottom:1px solid #ddd;
+}
+
+.highlight{
+background:#ff4d4d !important;
+color:white;
+font-weight:bold;
+}
+</style>
 </head>
 
 <body>
 
-    <header class="header">
+<header>
+<h1>DAS</h1>
+<input id="search" placeholder="ابحث بالكود أو الوصف أو القسم">
+</header>
 
-        <div class="logo">
-            DAS
-        </div>
+<div id="content"></div>
 
-        <input
-            type="text"
-            id="search"
-            placeholder="ابحث برقم العطل أو الوصف..."
-            autocomplete="off">
+<script>
 
-    </header>
+const data = {
 
-    <main>
+ABA:[
+{code:"0110",desc:"جهد كهربي منخفض بسلك الكهرباء الخاص بالكنترول"},
+{code:"0111",desc:"جهد كهربى مرتفع بسلك الكهرباء الخاص بالكنترول"},
+{code:"0150",desc:"عطل داخلي بالكنترول"}
+],
 
-        <div id="container"></div>
+ART:[
+{code:"0100",desc:"عطل داخلي بكنترول ART"},
+{code:"0150",desc:"عطل كلي بكنترول ART"},
+{code:"0200",desc:"عطل بحساس الرادار"}
+],
 
-    </main>
+BS:[
+{code:"0117",desc:"اشارة السرعه من الخباص TCO لا تطابق اشارة السرعه من نظام الفرامل"},
+{code:"0160",desc:"عطل في شبكة التحكم الرئيسية CAN Bus"},
+{code:"0162",desc:"عطل في شبكة التحكم الرئيسية CAN Bus"}
+],
 
-    <script src="script.js"></script>
+BTS:[
+{code:"0110",desc:"عطل داخلي بكنترول BTS"},
+{code:"0111",desc:"عطل داخلي بكنترول BTS"},
+{code:"0112",desc:"عطل داخلي بكنترول BTS"}
+],
+
+EDW:[
+{code:"F052",desc:"لا توجد تغذية عكسية من كنترول باب السائق TMF"},
+{code:"F513",desc:"خطأ فى موقع مفتاح الشاحنة"},
+{code:"F611",desc:"قطع بأحد أسلاك حساس مراقبة غلق باب السائق"}
+]
+
+};
+
+const content=document.getElementById("content");
+
+function render(){
+
+content.innerHTML="";
+
+for(const section in data){
+
+let html=`
+<div class="section">
+<h2>${section}</h2>
+
+<table>
+
+<tr>
+<th>الكود</th>
+<th>الوصف</th>
+</tr>
+`;
+
+data[section].forEach(item=>{
+
+html+=`
+<tr class="code-row"
+data-search="${section} ${item.code} ${item.desc}">
+<td>${item.code}</td>
+<td>${item.desc}</td>
+</tr>
+`;
+
+});
+
+html+=`
+</table>
+</div>
+`;
+
+content.innerHTML+=html;
+
+}
+
+}
+
+render();
+
+document.getElementById("search")
+.addEventListener("input",function(){
+
+let value=this.value.trim().toLowerCase();
+
+document
+.querySelectorAll(".code-row")
+.forEach(row=>row.classList.remove("highlight"));
+
+if(value==="") return;
+
+const rows=document.querySelectorAll(".code-row");
+
+for(let row of rows){
+
+let text=row.dataset.search.toLowerCase();
+
+if(text.includes(value)){
+
+row.classList.add("highlight");
+
+row.scrollIntoView({
+behavior:"smooth",
+block:"center"
+});
+
+break;
+
+}
+
+}
+
+});
+
+</script>
 
 </body>
-
 </html>
