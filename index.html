@@ -1,16 +1,37 @@
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-<meta charset="UTF-8">
-<title>DAS</title>
-</head>
-<body>
+<div class="app">
 
-<h1>DAS</h1>
+  <!-- HEADER -->
+  <header class="top">
 
-<script>
-document.body.innerHTML += "<h2>JavaScript يعمل</h2>";
-</script>
+    <div class="title">DAS DIAGNOSTIC TOOL</div>
 
-</body>
-</html>
+    <input id="search"
+           placeholder="Search DTC / Code / Text..."
+           oninput="searchCode()">
+
+  </header>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- LEFT RESULT PANEL -->
+    <div class="left">
+
+      <div id="resultCount">All Codes</div>
+
+      <div id="list"></div>
+
+    </div>
+
+    <!-- RIGHT DETAILS -->
+    <div class="right">
+
+      <div id="details">
+        Select a code to view details
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
