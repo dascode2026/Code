@@ -9,22 +9,23 @@ async function loadData() {
     render(allCodes);
 }
 
-function render(data){
+function render(data) {
 
     const container = document.getElementById("container");
+
+    container.innerHTML = "";
 
     let groups = {};
 
     data.forEach(item => {
 
-        if(!groups[item.module]){
+        if (!groups[item.module]) {
             groups[item.module] = [];
         }
 
         groups[item.module].push(item);
-    });
 
-    container.innerHTML = "";
+    });
 
     Object.keys(groups).forEach(module => {
 
@@ -33,17 +34,24 @@ function render(data){
         section.className = "section";
 
         section.innerHTML = `
-            <div class="section-title">${module}</div>
+        
+            <div class="section-title">
+                ${module}
+            </div>
 
             <div class="cards">
 
                 ${groups[module].map(item => `
+                
+                    <div
+                        class="card"
+                        data-code="${item.code}"
+                        data-desc="${item.description}"
+                    >
 
-                    <div class="card"
-                         data-code="${item.code}"
-                         data-desc="${item.description}">
-
-                        <div class="code">${item.code}</div>
+                        <div class="code">
+                            ${item.code}
+                        </div>
 
                         <div class="desc">
                             ${item.description}
@@ -54,6 +62,7 @@ function render(data){
                 `).join("")}
 
             </div>
+        
         `;
 
         container.appendChild(section);
@@ -64,11 +73,12 @@ function render(data){
 
 document
 .getElementById("search")
-.addEventListener("input", function(){
+.addEventListener("input", function () {
 
-    let value = this.value.toLowerCase();
+    const value = this.value.toLowerCase();
 
-    let cards = document.querySelectorAll(".card");
+    const cards =
+        document.querySelectorAll(".card");
 
     cards.forEach(card => {
 
@@ -76,42 +86,43 @@ document
 
     });
 
-    if(value === "") return;
+    if (value === "") return;
 
     let firstMatch = null;
 
     cards.forEach(card => {
 
-        let code =
+        const code =
             card.dataset.code.toLowerCase();
 
-        let desc =
+        const desc =
             card.dataset.desc.toLowerCase();
 
-        if(
+        if (
             code.includes(value)
             ||
             desc.includes(value)
-        ){
+        ) {
 
             card.classList.add("highlight");
 
-            if(!firstMatch){
+            if (!firstMatch) {
 
                 firstMatch = card;
 
             }
+
         }
 
     });
 
-    if(firstMatch){
+    if (firstMatch) {
 
         firstMatch.scrollIntoView({
 
-            behavior:"smooth",
+            behavior: "smooth",
 
-            block:"center"
+            block: "center"
 
         });
 
