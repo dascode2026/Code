@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>مركز أكواد الأعطال</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Tahoma,sans-serif;
+}
+
+body{
+    background:#0d1117;
+    color:white;
+}
+
+/* Header */
+
+header{
+    position:fixed;
+    top:0;
+    width:100%;
+    background:#161b22;
+    padding:15px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    z-index:1000;
+    box-shadow:0 0 15px rgba(0,0,0,.5);
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+    color:#00c8ff;
+}
+
+nav ul{
+    display:flex;
+    list-style:none;
+    gap:20px;
+}
+
+nav a{
+    text-decoration:none;
+    color:white;
+    transition:.3s;
+}
+
+nav a:hover{
+    color:#00c8ff;
+}
+
+/* Hero */
+
+.hero{
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    background:
+    linear-gradient(
+    rgba(0,0,0,.75),
+    rgba(0,0,0,.75)),
+    url('https://images.unsplash.com/photo-1503376780353-7e6692767b70');
+
+    background-size:cover;
+    background-position:center;
+}
+
+.hero h1{
+    font-size:50px;
+    margin-bottom:20px;
+}
+
+.hero p{
+    margin-bottom:25px;
+    font-size:18px;
+}
+
+/* Search */
+
+.search-box{
+    width:90%;
+    max-width:800px;
+    display:flex;
+    gap:10px;
+}
+
+.search-box input{
+    flex:1;
+    padding:18px;
+    border:none;
+    border-radius:10px;
+    font-size:18px;
+}
+
+.search-box button{
+    border:none;
+    background:#00c8ff;
+    color:black;
+    padding:18px 25px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+/* Results */
+
+.results{
+    width:90%;
+    max-width:800px;
+    margin-top:20px;
+}
+
+.result-item{
+    background:#161b22;
+    margin-top:10px;
+    padding:15px;
+    border-radius:10px;
+}
+
+/* Sections */
+
+.section{
+    padding:80px 20px;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:40px;
+    font-size:35px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:#161b22;
+    padding:25px;
+    border-radius:15px;
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+}
+
+.card h3{
+    color:#00c8ff;
+    margin-bottom:10px;
+}
+
+footer{
+    text-align:center;
+    padding:30px;
+    background:#161b22;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+TRUCK DIAG
+</div>
+
+<nav>
+<ul>
+<li><a href="#">الرئيسية</a></li>
+<li><a href="#">أكواد الأعطال</a></li>
+<li><a href="#">الكنترولات</a></li>
+<li><a href="#">الحساسات</a></li>
+<li><a href="#">المخططات</a></li>
+</ul>
+</nav>
+
+</header>
+
+<section class="hero">
+
+<h1>مركز كهرباء وتشخيص الشاحنات</h1>
+
+<p>
+ابحث عن كود عطل أو كنترول أو حساس
+</p>
+
+<div class="search-box">
+
+<input
+type="text"
+id="searchInput"
+placeholder="مثال: MR 4040">
+
+<button onclick="searchData()">
+بحث
+</button>
+
+</div>
+
+<div class="results" id="results"></div>
+
+</section>
+
+<section class="section">
+
+<h2 class="section-title">
+الأقسام الرئيسية
+</h2>
+
+<div class="cards">
+
+<div class="card">
+<h3>أكواد الأعطال</h3>
+<p>جميع الأكواد مع الشرح والأسباب.</p>
+</div>
+
+<div class="card">
+<h3>الكنترولات</h3>
+<p>MR - FR - CPC - GS وغيرها.</p>
+</div>
+
+<div class="card">
+<h3>الحساسات</h3>
+<p>أماكن الحساسات وطرق الفحص.</p>
+</div>
+
+<div class="card">
+<h3>المخططات</h3>
+<p>مخططات كهربائية وصور الأسلاك.</p>
+</div>
+
+</div>
+
+</section>
+
+<footer>
+جميع الحقوق محفوظة © 2026
+</footer>
+
+<script>
+
+const data = [
+
+{
+title:"MR 4040",
+desc:"إشارة غير صحيحة من حساس ضغط الوقود."
+},
+
+{
+title:"FR 3130",
+desc:"خلل في الاتصال مع وحدة المحرك."
+},
+
+{
+title:"CPC 9963",
+desc:"انخفاض جهد التغذية."
+}
+
+];
+
+function searchData(){
+
+let input =
+document
+.getElementById("searchInput")
+.value
+.toLowerCase();
+
+let results =
+document.getElementById("results");
+
+results.innerHTML="";
+
+let found =
+data.filter(item =>
+item.title.toLowerCase().includes(input)
+);
+
+if(found.length===0){
+
+results.innerHTML=
+"<div class='result-item'>لا توجد نتائج</div>";
+
+return;
+}
+
+found.forEach(item=>{
+
+results.innerHTML +=
+
+`<div class="result-item">
+
+<h3>${item.title}</h3>
+
+<p>${item.desc}</p>
+
+</div>`;
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
