@@ -4,61 +4,61 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>مركز أكواد الأعطال</title>
+<title>AutoDiag Pro</title>
 
 <style>
 
+/* ====== أساسيات ====== */
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Tahoma,sans-serif;
+    font-family:system-ui, Tahoma;
 }
 
 body{
-    background:#0d1117;
-    color:white;
+    background:#05070c;
+    color:#e6edf3;
 }
 
-/* Header */
-
+/* ====== الهيدر ====== */
 header{
     position:fixed;
     top:0;
     width:100%;
-    background:#161b22;
-    padding:15px 25px;
+    padding:15px 20px;
+
     display:flex;
     justify-content:space-between;
     align-items:center;
+
+    background:rgba(10,15,25,0.8);
+    backdrop-filter:blur(12px);
+
+    border-bottom:1px solid rgba(255,255,255,0.08);
+
     z-index:1000;
-    box-shadow:0 0 15px rgba(0,0,0,.5);
 }
 
 .logo{
-    font-size:24px;
+    font-size:20px;
     font-weight:bold;
-    color:#00c8ff;
+    color:#4cc9f0;
 }
 
-nav ul{
-    display:flex;
-    list-style:none;
-    gap:20px;
-}
-
+/* ====== القائمة ====== */
 nav a{
+    color:#cbd5e1;
     text-decoration:none;
-    color:white;
-    transition:.3s;
+    margin:0 10px;
+    font-size:14px;
 }
 
 nav a:hover{
-    color:#00c8ff;
+    color:#4cc9f0;
 }
 
-/* Hero */
-
+/* ====== الصفحة الرئيسية ====== */
 .hero{
     height:100vh;
     display:flex;
@@ -66,251 +66,220 @@ nav a:hover{
     justify-content:center;
     align-items:center;
 
-    background:
-    linear-gradient(
-    rgba(0,0,0,.75),
-    rgba(0,0,0,.75)),
-    url('https://images.unsplash.com/photo-1503376780353-7e6692767b70');
+    padding:80px 20px 20px;
 
-    background-size:cover;
-    background-position:center;
+    text-align:center;
 }
 
 .hero h1{
-    font-size:50px;
-    margin-bottom:20px;
+    font-size:36px;
+    margin-bottom:10px;
 }
 
 .hero p{
-    margin-bottom:25px;
-    font-size:18px;
+    color:#94a3b8;
+    margin-bottom:20px;
 }
 
-/* Search */
-
-.search-box{
-    width:90%;
-    max-width:800px;
+/* ====== البحث ====== */
+.search{
+    width:100%;
+    max-width:700px;
     display:flex;
     gap:10px;
 }
 
-.search-box input{
+.search input{
     flex:1;
-    padding:18px;
-    border:none;
-    border-radius:10px;
-    font-size:18px;
-}
-
-.search-box button{
-    border:none;
-    background:#00c8ff;
-    color:black;
-    padding:18px 25px;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-/* Results */
-
-.results{
-    width:90%;
-    max-width:800px;
-    margin-top:20px;
-}
-
-.result-item{
-    background:#161b22;
-    margin-top:10px;
     padding:15px;
-    border-radius:10px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.1);
+    background:#0f172a;
+    color:white;
+    font-size:16px;
+    outline:none;
 }
 
-/* Sections */
+.search button{
+    padding:15px 20px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg,#4cc9f0,#4361ee);
+    color:white;
+    cursor:pointer;
+}
 
+/* ====== النتائج ====== */
+.results{
+    width:100%;
+    max-width:700px;
+    margin-top:15px;
+}
+
+.item{
+    background:#0f172a;
+    padding:15px;
+    margin-top:10px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+/* ====== الأقسام ====== */
 .section{
-    padding:80px 20px;
+    padding:60px 20px;
 }
 
-.section-title{
+.title{
     text-align:center;
-    margin-bottom:40px;
-    font-size:35px;
+    font-size:24px;
+    margin-bottom:30px;
 }
 
-.cards{
+.grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:20px;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:15px;
+    max-width:1000px;
+    margin:auto;
 }
 
-.card{
-    background:#161b22;
-    padding:25px;
-    border-radius:15px;
-    transition:.3s;
+.box{
+    background:#0f172a;
+    padding:20px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,0.08);
+    transition:0.3s;
 }
 
-.card:hover{
-    transform:translateY(-10px);
+.box:hover{
+    transform:translateY(-5px);
+    border-color:#4cc9f0;
 }
 
-.card h3{
-    color:#00c8ff;
-    margin-bottom:10px;
-}
+/* ====== موبايل ====== */
+@media(max-width:768px){
 
-footer{
-    text-align:center;
-    padding:30px;
-    background:#161b22;
+    nav{
+        display:none;
+    }
+
+    .hero h1{
+        font-size:24px;
+    }
+
+    .search{
+        flex-direction:column;
+    }
+
+    .search button{
+        width:100%;
+    }
 }
 
 </style>
+
 </head>
 
 <body>
 
 <header>
 
-<div class="logo">
-TRUCK DIAG
-</div>
+<div class="logo">AutoDiag</div>
 
 <nav>
-<ul>
-<li><a href="#">الرئيسية</a></li>
-<li><a href="#">أكواد الأعطال</a></li>
-<li><a href="#">الكنترولات</a></li>
-<li><a href="#">الحساسات</a></li>
-<li><a href="#">المخططات</a></li>
-</ul>
+<a href="#">الرئيسية</a>
+<a href="#">الأكواد</a>
+<a href="#">الكنترولات</a>
+<a href="#">الحساسات</a>
 </nav>
 
 </header>
 
+<!-- ====== HERO ====== -->
 <section class="hero">
 
-<h1>مركز كهرباء وتشخيص الشاحنات</h1>
+<h1>نظام تشخيص كهرباء السيارات</h1>
+<p>ابحث عن أي كود أو حساس أو كنترول بسرعة</p>
 
-<p>
-ابحث عن كود عطل أو كنترول أو حساس
-</p>
-
-<div class="search-box">
-
-<input
-type="text"
-id="searchInput"
-placeholder="مثال: MR 4040">
-
-<button onclick="searchData()">
-بحث
-</button>
-
+<div class="search">
+<input id="searchInput" placeholder="مثال: MR 4040">
+<button onclick="search()">بحث</button>
 </div>
 
 <div class="results" id="results"></div>
 
 </section>
 
+<!-- ====== SECTIONS ====== -->
 <section class="section">
 
-<h2 class="section-title">
-الأقسام الرئيسية
-</h2>
+<div class="title">الأقسام الرئيسية</div>
 
-<div class="cards">
+<div class="grid">
 
-<div class="card">
+<div class="box">
 <h3>أكواد الأعطال</h3>
-<p>جميع الأكواد مع الشرح والأسباب.</p>
 </div>
 
-<div class="card">
+<div class="box">
 <h3>الكنترولات</h3>
-<p>MR - FR - CPC - GS وغيرها.</p>
 </div>
 
-<div class="card">
+<div class="box">
 <h3>الحساسات</h3>
-<p>أماكن الحساسات وطرق الفحص.</p>
 </div>
 
-<div class="card">
+<div class="box">
 <h3>المخططات</h3>
-<p>مخططات كهربائية وصور الأسلاك.</p>
 </div>
 
 </div>
 
 </section>
 
-<footer>
-جميع الحقوق محفوظة © 2026
-</footer>
-
 <script>
 
 const data = [
-
 {
-title:"MR 4040",
-desc:"إشارة غير صحيحة من حساس ضغط الوقود."
+name:"MR 4040",
+desc:"خلل في ضغط الوقود"
 },
-
 {
-title:"FR 3130",
-desc:"خلل في الاتصال مع وحدة المحرك."
+name:"FR 3130",
+desc:"مشكلة اتصال CAN"
 },
-
 {
-title:"CPC 9963",
-desc:"انخفاض جهد التغذية."
+name:"CPC 1110",
+desc:"انخفاض جهد التغذية"
 }
-
 ];
 
-function searchData(){
+function search(){
 
-let input =
-document
-.getElementById("searchInput")
-.value
-.toLowerCase();
+let val =
+document.getElementById("searchInput").value.toLowerCase();
 
-let results =
+let res =
 document.getElementById("results");
 
-results.innerHTML="";
+res.innerHTML="";
 
 let found =
-data.filter(item =>
-item.title.toLowerCase().includes(input)
+data.filter(x =>
+x.name.toLowerCase().includes(val)
 );
 
-if(found.length===0){
-
-results.innerHTML=
-"<div class='result-item'>لا توجد نتائج</div>";
-
+if(found.length==0){
+res.innerHTML="<div class='item'>لا توجد نتائج</div>";
 return;
 }
 
-found.forEach(item=>{
-
-results.innerHTML +=
-
-`<div class="result-item">
-
-<h3>${item.title}</h3>
-
-<p>${item.desc}</p>
-
+found.forEach(x=>{
+res.innerHTML +=
+`<div class="item">
+<b>${x.name}</b><br>
+${x.desc}
 </div>`;
-
 });
 
 }
