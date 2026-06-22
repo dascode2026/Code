@@ -119,7 +119,7 @@
             box-shadow: 0 0 12px rgba(0, 255, 102, 0.3);
         }
 
-        /* زر التنزيل */
+        /* زر التنزيل المستقر */
         .btn-download {
             background-color: var(--accent-color);
             color: #0b0f17;
@@ -186,7 +186,7 @@
                 </div>
                 <div class="book-actions">
                     <a href="DAS.pdf" target="_blank" class="book-btn btn-open"><i class="fa-solid fa-eye"></i> فتح</a>
-                    <button onclick="forceDownload('DAS.pdf', 'كنترول mr.pdf')" class="book-btn btn-download"><i class="fa-solid fa-download"></i> تنزيل</button>
+                    <a href="DAS.pdf" download="كنترول mr.pdf" class="book-btn btn-download"><i class="fa-solid fa-download"></i> تنزيل</a>
                 </div>
             </div>
 
@@ -217,24 +217,6 @@ function liveSearch() {
         let text = row.querySelector('.book-info h3').textContent || row.querySelector('.book-info h3').innerText;
         row.style.display = text.toLowerCase().indexOf(filter) > -1 ? "" : "none";
     });
-}
-
-function forceDownload(url, filename) {
-    fetch(url)
-        .then(response => response.blob())
-        .then(blob => {
-            const blobUrl = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = blobUrl;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(blobUrl);
-        })
-        .catch(err => {
-            console.error(err);
-        });
 }
 </script>
 </body>
