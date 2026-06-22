@@ -184,50 +184,60 @@
                     
                     <button onclick="forceDownload('DAS.pdf', 'كنترول mr.pdf')" class="book-btn btn-download"><i class="fa-solid fa-arrow-down-to-line"></i> تنزيل</button>
                 </div>
-                 <div class="book-card">
-            <div class="book-icon">📘</div>
-            <div class="book-title">كنترول mr</div>
-            <a href="DAS.pdf" target="_blank" class="book-btn">فتح الكتاب</a>
-        </div>
             </div>
 
             </div>
     </main>
+<script>
+function toggleDropdown() {
+    document.getElementById("pagesDropdown").classList.toggle("active");
+}
 
-    <script>
-        function toggleDropdown() { document.getElementById("pagesDropdown").classList.toggle("active"); }
-        window.onclick = function(event) { if (!event.target.matches('.dropdown-btn') && !event.target.matches('.dropdown-btn *')) { var dropdowns = document.getElementsByClassName("dropdown"); for (var i = 0; i < dropdowns.length; i++) { if (dropdowns[i].classList.contains('active')) dropdowns[i].classList.remove('active'); } } }
-        
-        function liveSearch() { 
-            let filter = document.getElementById('globalSearch').value.toLowerCase(); 
-            let rows = document.querySelectorAll('.searchable'); 
-            rows.forEach(row => { 
-                let text = row.textContent || row.innerText; 
-                row.style.display = text.toLowerCase().indexOf(filter) > -1 ? "" : "none"; 
-            }); 
-        }
+window.onclick = function(event) {
+    if (!event.target.matches('.dropdown-btn') &&
+        !event.target.matches('.dropdown-btn *')) {
 
-        /* الدالة السحرية لإجبار المتصفح على تحميل ملف الـ PDF مباشرة بصيغة Blob دون فتحه */
-        function forceDownload(url, filename) {
-            fetch(url)
-                .then(response => response.blob())
-                .then(blob => {
-                    const link = document.createElement('a');
-                    link.href = URL.createObjectURL(blob);
-                    link.download = filename;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                })
-                .catch(() => {
-                    // في حال كان الملف خارج السيرفر وحدثت مشكلة حماية، يعمل كبديل تلقائي
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.download = filename;
-                    link.target = '_self';
-                    link.click();
-                });
+        var dropdowns = document.getElementsByClassName("dropdown");
+
+        for (var i = 0; i < dropdowns.length; i++) {
+            if (dropdowns[i].classList.contains('active')) {
+                dropdowns[i].classList.remove('active');
+            }
         }
-    </script>
+    }
+}
+
+function liveSearch() {
+    let filter = document.getElementById('globalSearch').value.toLowerCase();
+    let rows = document.querySelectorAll('.searchable');
+
+    rows.forEach(row => {
+        let text = row.textContent || row.innerText;
+        row.style.display =
+            text.toLowerCase().indexOf(filter) > -1 ? "" : "none";
+    });
+}
+
+function forceDownload(url, filename) {
+    fetch(url)
+        .then(response => response.blob())
+        .then(blob => {
+            const blobUrl = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = filename;
+
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            URL.revokeObjectURL(blobUrl);
+        })
+        .catch(err => {
+            console.error(err);
+        });
+}
+</script>
 </body>
 </html>
