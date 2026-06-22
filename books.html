@@ -134,11 +134,16 @@
         
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        
         @media (max-width: 600px) { 
             .book-row { flex-direction: column; align-items: flex-start; gap: 15px; } 
             .book-actions { width: 100%; justify-content: flex-end; }
         }
-        @media (max-width: 500px) { .header-container { padding: 10px 15px; } .logo { font-size: 20px; main { margin-top: 120px; } } }
+        @media (max-width: 500px) { 
+            .header-container { padding: 10px 15px; } 
+            .logo { font-size: 20px; }
+            main { margin-top: 120px; } 
+        }
     </style>
 </head>
 <body>
@@ -181,24 +186,21 @@
                 </div>
                 <div class="book-actions">
                     <a href="DAS.pdf" target="_blank" class="book-btn btn-open"><i class="fa-solid fa-eye"></i> فتح</a>
-                    
-                    <button onclick="forceDownload('DAS.pdf', 'كنترول mr.pdf')" class="book-btn btn-download"><i class="fa-solid fa-arrow-down-to-line"></i> تنزيل</button>
+                    <button onclick="forceDownload('DAS.pdf', 'كنترول mr.pdf')" class="book-btn btn-download"><i class="fa-solid fa-download"></i> تنزيل</button>
                 </div>
             </div>
 
             </div>
     </main>
+
 <script>
 function toggleDropdown() {
     document.getElementById("pagesDropdown").classList.toggle("active");
 }
 
 window.onclick = function(event) {
-    if (!event.target.matches('.dropdown-btn') &&
-        !event.target.matches('.dropdown-btn *')) {
-
+    if (!event.target.matches('.dropdown-btn') && !event.target.matches('.dropdown-btn *')) {
         var dropdowns = document.getElementsByClassName("dropdown");
-
         for (var i = 0; i < dropdowns.length; i++) {
             if (dropdowns[i].classList.contains('active')) {
                 dropdowns[i].classList.remove('active');
@@ -212,9 +214,8 @@ function liveSearch() {
     let rows = document.querySelectorAll('.searchable');
 
     rows.forEach(row => {
-        let text = row.textContent || row.innerText;
-        row.style.display =
-            text.toLowerCase().indexOf(filter) > -1 ? "" : "none";
+        let text = row.querySelector('.book-info h3').textContent || row.querySelector('.book-info h3').innerText;
+        row.style.display = text.toLowerCase().indexOf(filter) > -1 ? "" : "none";
     });
 }
 
@@ -223,15 +224,12 @@ function forceDownload(url, filename) {
         .then(response => response.blob())
         .then(blob => {
             const blobUrl = URL.createObjectURL(blob);
-
             const a = document.createElement('a');
             a.href = blobUrl;
             a.download = filename;
-
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-
             URL.revokeObjectURL(blobUrl);
         })
         .catch(err => {
