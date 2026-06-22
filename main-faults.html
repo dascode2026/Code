@@ -2,14 +2,14 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DAS | أهم الأعطال</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg-color: #0b0f17; --panel-bg: #131a26; --accent-color: #00ff66; --text-color: #94a3b8; --text-bright: #ffffff; --border-color: #1e293b; --transition-speed: 0.25s; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-color); color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; }
-        header { position: fixed; top: 0; left: 0; width: 100%; background-color: rgba(13, 17, 23, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color); z-index: 1000; }
+        header { position: fixed; top: 0; left: 0; width: 100%; background-color: rgba(19, 26, 38, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color); z-index: 1000; }
         .header-container { max-width: 1200px; margin: 0 auto; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; gap: 15px; }
         .right-side { display: flex; align-items: center; gap: 12px; }
         .logo { font-size: 24px; font-weight: 900; color: var(--text-bright); letter-spacing: 1.5px; }
@@ -25,14 +25,17 @@
         .search-input:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 15px rgba(0, 255, 102, 0.15); }
         .search-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #64748b; }
         main { flex-grow: 1; max-width: 1200px; width: 100%; margin: 90px auto 40px auto; padding: 0 20px; animation: slideUp 0.35s ease-out; }
-        .page-title { font-size: 26px; color: var(--text-bright); margin-bottom: 25px; position: relative; padding-right: 15px; }
+        .page-title { font-size: 26px; color: var(--text-bright); margin-bottom: 25px; position: relative; padding-right: 15px; font-weight: 700; }
         .page-title::before { content: ''; position: absolute; right: 0; top: 15%; height: 70%; width: 4px; background-color: var(--accent-color); border-radius: 2px; }
         .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .card { background-color: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 22px; transition: all var(--transition-speed); }
+        .card { background-color: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 22px; transition: all var(--transition-speed); scroll-margin-top: 100px; }
         .card:hover { transform: translateY(-4px); border-color: var(--accent-color); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); }
         .card h3 { color: var(--text-bright); margin-bottom: 10px; font-size: 18px; }
         .card p { font-size: 14px; line-height: 1.6; color: #64748b; }
         .badge { background: rgba(0, 255, 102, 0.06); color: var(--accent-color); padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-block; margin-top: 12px; border: 1px solid rgba(0, 255, 102, 0.1); }
+        
+        @keyframes flashHighlight { 0% { background-color: rgba(0, 255, 102, 0.25); border-color: var(--accent-color); } 100% { background-color: var(--panel-bg); } }
+        .highlight-card { animation: flashHighlight 2s ease-out; border-color: var(--accent-color) !important; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         @media (max-width: 500px) { .header-container { padding: 10px 15px; } .logo { font-size: 20px; } main { margin-top: 80px; } }
@@ -56,7 +59,7 @@
                 </div>
             </div>
             <div class="search-container">
-                <input type="text" class="search-input" id="globalSearch" placeholder="ابحث تلقائياً أثناء الكتابة هنا..." onkeyup="liveSearch()">
+                <input type="text" class="search-input" id="globalSearch" placeholder="ابحث في هذه الصفحة..." onkeyup="liveSearch()">
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
             </div>
         </div>
@@ -64,15 +67,29 @@
     <main>
         <h2 class="page-title">أهم الأعطال الكهربائية الميدانية والشائعة</h2>
         <div class="grid-container">
-            <div class="card searchable"><h3>ضعف السحب والتسارع المفاجئ</h3><p>غالباً بسبب تهريب هواء في منظومة شاحن التيربو أو خلل في الأسلاك الكهربائية لبلف الـ EGR أو تلف حساس الضغط المباشر.</p><span class="badge">أعطال المحركات</span></div>
-            <div class="card searchable"><h3>تجمد غيارات ناقل الحركة (Neutral)</h3><p>ينتج عن ضعف مفاجئ في ضغط الهواء المغذي للبلف الرئيسي المتصل بالضفيرة أو تأكسد في تلامسات الفيش السفلي للجير.</p><span class="badge">صيانة ناقل الحركة</span></div>
-            <div class="card searchable"><h3>انقطاع طاقة لوحة التابلوه كاملة</h3><p>سببه الرئيسي تراكم الأملاح على فيوزات التغذية الرئيسية (Master Fuses) أو ماس كهربائي في خط البطاريات الخلفي.</p><span class="badge">كهرباء عامة</span></div>
+            <div class="card searchable" id="fault1"><h3>ضعف السحب والتسارع المفاجئ</h3><p>غالباً بسبب تهريب هواء في منظومة شاحن التيربو أو خلل في الأسلاك الكهربائية لبلف الـ EGR أو تلف حساس الضغط المباشر.</p><span class="badge">أعطال المحركات</span></div>
+            <div class="card searchable" id="fault2"><h3>تجمد غيارات ناقل الحركة (Neutral)</h3><p>ينتج عن ضعف مفاجئ في ضغط الهواء المغذي للبلف الرئيسي المتصل بالضفيرة أو تأكسد في تلامسات الفيش السفلي للجير.</p><span class="badge">صيانة ناقل الحركة</span></div>
+            <div class="card searchable" id="fault3"><h3>انقطاع طاقة لوحة التابلوه كاملة</h3><p>سببه الرئيسي تراكم الأملاح على فيوزات التغذية الرئيسية (Master Fuses) أو ماس كهربائي في خط البطاريات الخلفي.</p><span class="badge">كهرباء عامة</span></div>
         </div>
     </main>
     <script>
         function toggleDropdown() { document.getElementById("pagesDropdown").classList.toggle("active"); }
         window.onclick = function(event) { if (!event.target.matches('.dropdown-btn') && !event.target.matches('.dropdown-btn *')) { var dropdowns = document.getElementsByClassName("dropdown"); for (var i = 0; i < dropdowns.length; i++) { if (dropdowns[i].classList.contains('active')) dropdowns[i].classList.remove('active'); } } }
         function liveSearch() { let filter = document.getElementById('globalSearch').value.toLowerCase(); let cards = document.querySelectorAll('.searchable'); cards.forEach(card => { let text = card.textContent || card.innerText; card.style.display = text.toLowerCase().indexOf(filter) > -1 ? "" : "none"; }); }
+        
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetId = urlParams.get('target');
+            if(targetId) {
+                const element = document.getElementById(targetId);
+                if(element) {
+                    setTimeout(() => {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        element.classList.add('highlight-card');
+                    }, 300);
+                }
+            }
+        }
     </script>
 </body>
 </html>

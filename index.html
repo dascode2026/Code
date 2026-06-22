@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DAS | الرئيسية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -15,7 +15,7 @@
             --border-color: #1e293b;
             --transition-speed: 0.25s;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-color); color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; }
         
         header { position: fixed; top: 0; left: 0; width: 100%; background-color: rgba(19, 26, 38, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color); z-index: 1000; }
@@ -37,6 +37,12 @@
         .search-input:focus { outline: none; border-color: var(--accent-color); background-color: rgba(255, 255, 255, 0.05); box-shadow: 0 0 15px rgba(0, 255, 102, 0.15); }
         .search-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 14px; }
         
+        .search-results-dropdown { display: none; position: absolute; top: 100%; left: 0; width: 100%; background-color: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 12px; max-height: 300px; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.6); z-index: 1100; margin-top: 5px; }
+        .result-item { padding: 12px 15px; color: var(--text-bright); text-decoration: none; display: block; border-bottom: 1px solid rgba(255,255,255,0.02); transition: all 0.2s; }
+        .result-item:hover { background-color: rgba(0, 255, 102, 0.08); }
+        .result-item .result-category { font-size: 11px; color: var(--accent-color); display: block; margin-bottom: 2px; font-weight: bold; }
+        .result-item .result-text { font-size: 13px; color: var(--text-color); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
         main { flex-grow: 1; max-width: 1200px; width: 100%; margin: 90px auto 40px auto; padding: 0 20px; animation: slideUp 0.35s ease-out; }
         .page-title { font-size: 26px; color: var(--text-bright); margin-bottom: 25px; font-weight: 700; position: relative; padding-right: 15px; }
         .page-title::before { content: ''; position: absolute; right: 0; top: 15%; height: 70%; width: 4px; background-color: var(--accent-color); border-radius: 2px; }
@@ -71,25 +77,62 @@
                 </div>
             </div>
             <div class="search-container">
-                <input type="text" class="search-input" id="globalSearch" placeholder="ابحث عن قسم معين..." onkeyup="liveSearch()">
+                <input type="text" class="search-input" id="globalSearch" placeholder="ابحث عن أكواد، أعطال أو مخططات..." onkeyup="globalSystemSearch()">
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <div class="search-results-dropdown" id="searchResults"></div>
             </div>
         </div>
     </header>
     <main>
         <h2 class="page-title">منصة الهندسة والصيانة الرقمية</h2>
         <div class="grid-container">
-            <a href="fault-codes.html" class="card searchable"><h3><i class="fa-solid fa-barcode"></i> أكواد الأعطال (DTC)</h3><p>البحث السريع والتلقائي عن كافة رموز وأكواد شاحنات مرسيدس أكتروس والأنظمة الحركية.</p></a>
-            <a href="main-faults.html" class="card searchable"><h3><i class="fa-solid fa-triangle-exclamation"></i> أهم الأعطال الشائعة</h3><p>رصد ومتابعة المشاكل الميدانية الأكثر تكراراً في الأجهزة والضفائر وحلولها السريعة.</p></a>
-            <a href="ecu-controllers.html" class="card searchable"><h3><i class="fa-solid fa-microchip"></i> الكنترولات (ECUs)</h3><p>دليل وظائف العقول والكمبيوترات الأساسية والفرعية داخل الشاحنة ووحدات التحكم.</p></a>
-            <a href="diagrams.html" class="card searchable"><h3><i class="fa-solid fa-bezier-curve"></i> المخططات الكهربائية</h3><p>خرائط وتوزيع الأسلاك الكهربائية، مسارات شبكة الـ CAN-Bus ونقاط التأريض.</p></a>
-            <a href="books.html" class="card searchable"><h3><i class="fa-solid fa-book"></i> كتب دليل الصيانة</h3><p>مكتبة المراجع والكتالوجات الفنية المتكاملة لصيانة وإصلاح الأنظمة الهيدروليكية والميكانيكية.</p></a>
+            <a href="fault-codes.html" class="card"><h3><i class="fa-solid fa-barcode"></i> أكواد الأعطال (DTC)</h3><p>البحث السريع والتلقائي عن كافة رموز وأكواد شاحنات مرسيدس أكتروس والأنظمة الحركية.</p></a>
+            <a href="main-faults.html" class="card"><h3><i class="fa-solid fa-triangle-exclamation"></i> أهم الأعطال الشائعة</h3><p>رصد ومتابعة المشاكل الميدانية الأكثر تكراراً في الأجهزة والضفائر وحلولها السريعة.</p></a>
+            <a href="ecu-controllers.html" class="card"><h3><i class="fa-solid fa-microchip"></i> الكنترولات (ECUs)</h3><p>دليل وظائف العقول والكمبيوترات الأساسية والفرعية داخل الشاحنة ووحدات التحكم.</p></a>
+            <a href="diagrams.html" class="card"><h3><i class="fa-solid fa-bezier-curve"></i> المخططات الكهربائية</h3><p>خرائط وتوزيع الأسلاك الكهربائية، مسارات شبكة الـ CAN-Bus ونقاط التأريض.</p></a>
+            <a href="books.html" class="card"><h3><i class="fa-solid fa-book"></i> كتب دليل الصيانة</h3><p>مكتبة المراجع والكتالوجات الفنية المتكاملة لصيانة وإصلاح الأنظمة الهيدروليكية والميكانيكية.</p></a>
         </div>
     </main>
     <script>
         function toggleDropdown() { document.getElementById("pagesDropdown").classList.toggle("active"); }
-        window.onclick = function(event) { if (!event.target.matches('.dropdown-btn') && !event.target.matches('.dropdown-btn *')) { var dropdowns = document.getElementsByClassName("dropdown"); for (var i = 0; i < dropdowns.length; i++) { if (dropdowns[i].classList.contains('active')) dropdowns[i].classList.remove('active'); } } }
-        function liveSearch() { let filter = document.getElementById('globalSearch').value.toLowerCase(); let cards = document.querySelectorAll('.searchable'); cards.forEach(card => { let text = card.textContent || card.innerText; card.style.display = text.toLowerCase().indexOf(filter) > -1 ? "" : "none"; }); }
+        window.onclick = function(event) { if (!event.target.matches('.dropdown-btn') && !event.target.matches('.dropdown-btn *')) { var dropdowns = document.getElementsByClassName("dropdown"); for (var i = 0; i < dropdowns.length; i++) { if (dropdowns[i].classList.contains('active')) dropdowns[i].classList.remove('active'); } } if (!event.target.matches('#globalSearch')) { document.getElementById('searchResults').style.display = "none"; } }
+        
+        // قاعدة بيانات البحث الشامل للرئيسية يربط بكل الصفحات والمواقع المحددة عبر الـ ID
+        const siteDatabase = [
+            { id: "mr0404", title: "MR 0404", text: "عطل في خط بيانات كان باص (CAN Bus Error) الخاص بالممحرك", page: "fault-codes.html", cat: "أكواد الأعطال" },
+            { id: "gs1011", title: "GS 1011", text: "خطأ قراءة حساس وحدة اختيار الغيارات والتنسيق للجير", page: "fault-codes.html", cat: "أكواد الأعطال" },
+            { id: "bs4345", title: "BS 4345", text: "انقطاع أو مشكلة في إشارة مستشعر ضغط الفرامل الكهربائي", page: "fault-codes.html", cat: "أكواد الأعطال" },
+            { id: "ins0502", title: "INS 0502", text: "عطل في دائرة حساس مستشعر خزان الوقود وعرض القراءات", page: "fault-codes.html", cat: "أكواد الأعطال" },
+            { id: "fault1", title: "ضعف السحب والتسارع المفاجئ", text: "تهريب هواء في منظومة شاحن التيربو أو خلل في أسلاك بلف الـ EGR", page: "main-faults.html", cat: "الأعطال الشائعة" },
+            { id: "fault2", title: "تجمد غيارات ناقل الحركة (Neutral)", text: "ضعف مفاجئ في ضغط الهواء المغذي للبلف الرئيسي المتصل بالضفيرة", page: "main-faults.html", cat: "الأعطال الشائعة" },
+            { id: "fault3", title: "انقطاع طاقة لوحة التابلوه كاملة", text: "تراكم الأملاح على فيوزات التغذية الرئيسية أو ماس في خط البطاريات", page: "main-faults.html", cat: "الأعطال الشائعة" },
+            { id: "ecu1", title: "كنترول المحرك الرئيسي (MR / PLD)", text: "المسؤول المباشر عن معالجة توقيتات حقن الوقود وتشغيل البخاخات", page: "ecu-controllers.html", cat: "الكنترولات" },
+            { id: "ecu2", title: "كنترول التنسيق والأداء العام (CPC / FMR)", text: "بوابة الاتصال الذكية الفاصلة بين دعسة الوقود والكنترولات الأخرى", page: "ecu-controllers.html", cat: "التحكم المركزي" },
+            { id: "ecu3", title: "كمبيوتر الفرامل والاتزان (BS / ABS)", text: "يعالج البيانات الحركية القادمة من مستشعرات الإطارات الأربعة", page: "ecu-controllers.html", cat: "أنظمة السلامة" },
+            { id: "diag1", title: "مخطط ضفيرة الإشعال وبلوف البخاخات للمحرك", text: "مخطط لوني ورقمي متكامل يوضح نقاط اتصال أسلاك البخاخات الستة", page: "diagrams.html", cat: "المخططات الكهربائية" },
+            { id: "diag2", title: "مخطط شبكة الـ CAN-Bus ونقاط الاتصال", text: "مسارات توزيع المقاومات القياسية 120 أوم للتوصيل البيني الذكي", page: "diagrams.html", cat: "المخططات الكهربائية" },
+            { id: "diag3", title: "مخطط التغذية الأرضية والسالبة للغرفة", text: "توزيع نقاط التأريض لمنع حدوث التماسات أو قراءات عشوائية خاطئة", page: "diagrams.html", cat: "المخططات الكهربائية" },
+            { id: "book1", title: "دليل تشخيص وهندسة أعطال الأكتروس", text: "مرجع متكامل يشرح آلية قراءة الأخطاء وتحليلها بأنظمة Xentry/DAS", page: "books.html", cat: "مكتبة الكتب" },
+            { id: "book2", title: "موسوعة صيانة أنظمة وضفائر مضخات الخرسانة", text: "كتاب مهني مخصص لتتبع المسارات الهيدروليكية والكهربائية المشتركة", page: "books.html", cat: "مكتبة الكتب" }
+        ];
+
+        function globalSystemSearch() {
+            let filter = document.getElementById('globalSearch').value.toLowerCase();
+            let resultsDropdown = document.getElementById('searchResults');
+            resultsDropdown.innerHTML = "";
+            if (!filter) { resultsDropdown.style.display = "none"; return; }
+            let filtered = siteDatabase.filter(item => item.title.toLowerCase().includes(filter) || item.text.toLowerCase().includes(filter));
+            if (filtered.length > 0) {
+                filtered.forEach(item => {
+                    let a = document.createElement('a');
+                    a.href = `${item.page}?target=${item.id}`;
+                    a.className = "result-item";
+                    a.innerHTML = `<span class="result-category">${item.cat}</span><div>${item.title}</div><div class="result-text">${item.text}</div>`;
+                    resultsDropdown.appendChild(a);
+                });
+                resultsDropdown.style.display = "block";
+            } else { resultsDropdown.style.display = "none"; }
+        }
     </script>
 </body>
 </html>
