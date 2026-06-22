@@ -1,290 +1,472 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تكنو شاحنات | فحص وبرمجة كمبيوتر</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* تعريف الألوان والتنسيقات الأساسية */
+        :root {
+            --bg-color: #0d1117;
+            --panel-bg: #161b22;
+            --accent-color: #00ff66; /* أخضر نيون للفحص والكمبيوتر */
+            --text-color: #c9d1d9;
+            --text-bright: #ffffff;
+            --border-color: #30363d;
+            --transition-speed: 0.3s;
+        }
 
-<title>AutoDiag Pro</title>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-<style>
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-/* ====== أساسيات ====== */
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:system-ui, Tahoma;
-}
+        /* --- الهيدر المثبت --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(22, 27, 34, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--border-color);
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
 
-body{
-    background:#05070c;
-    color:#e6edf3;
-}
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+        }
 
-/* ====== الهيدر ====== */
-header{
-    position:fixed;
-    top:0;
-    width:100%;
-    padding:15px 20px;
+        /* السطر العلوي: اسم الموقع */
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
 
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-bright);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
+        }
 
-    background:rgba(10,15,25,0.8);
-    backdrop-filter:blur(12px);
+        .logo i {
+            color: var(--accent-color);
+        }
 
-    border-bottom:1px solid rgba(255,255,255,0.08);
+        /* السطر السفلي: القائمة والبحث */
+        .header-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
 
-    z-index:1000;
-}
+        /* القائمة المنسدلة الاحترافية */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
 
-.logo{
-    font-size:20px;
-    font-weight:bold;
-    color:#4cc9f0;
-}
+        .dropdown-btn {
+            background-color: var(--panel-bg);
+            color: var(--text-bright);
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all var(--transition-speed);
+        }
 
-/* ====== القائمة ====== */
-nav a{
-    color:#cbd5e1;
-    text-decoration:none;
-    margin:0 10px;
-    font-size:14px;
-}
+        .dropdown-btn:hover, .dropdown-btn:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
+        }
 
-nav a:hover{
-    color:#4cc9f0;
-}
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: var(--panel-bg);
+            min-width: 220px;
+            box-shadow: 0px 8px 24px rgba(0,0,0,0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            z-index: 1;
+            margin-top: 5px;
+            overflow: hidden;
+        }
 
-/* ====== الصفحة الرئيسية ====== */
-.hero{
-    height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
+        .dropdown-content a {
+            color: var(--text-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: background var(--transition-speed), color var(--transition-speed);
+        }
 
-    padding:80px 20px 20px;
+        .dropdown-content a:hover {
+            background-color: rgba(0, 255, 102, 0.1);
+            color: var(--accent-color);
+        }
 
-    text-align:center;
-}
+        /* عرض القائمة عند التفعيل */
+        .dropdown.active .dropdown-content {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
 
-.hero h1{
-    font-size:36px;
-    margin-bottom:10px;
-}
+        /* مربع البحث الخرافي */
+        .search-container {
+            position: relative;
+            flex-grow: 1;
+            max-width: 500px;
+        }
 
-.hero p{
-    color:#94a3b8;
-    margin-bottom:20px;
-}
+        .search-input {
+            width: 100%;
+            padding: 12px 45px 12px 20px;
+            font-size: 16px;
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            color: var(--text-bright);
+            transition: all var(--transition-speed) ease;
+        }
 
-/* ====== البحث ====== */
-.search{
-    width:100%;
-    max-width:700px;
-    display:flex;
-    gap:10px;
-}
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+            background-color: #1f242c;
+        }
 
-.search input{
-    flex:1;
-    padding:15px;
-    border-radius:12px;
-    border:1px solid rgba(255,255,255,0.1);
-    background:#0f172a;
-    color:white;
-    font-size:16px;
-    outline:none;
-}
+        .search-icon {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8b949e;
+            transition: color var(--transition-speed);
+        }
 
-.search button{
-    padding:15px 20px;
-    border:none;
-    border-radius:12px;
-    background:linear-gradient(135deg,#4cc9f0,#4361ee);
-    color:white;
-    cursor:pointer;
-}
+        .search-input:focus + .search-icon {
+            color: var(--accent-color);
+        }
 
-/* ====== النتائج ====== */
-.results{
-    width:100%;
-    max-width:700px;
-    margin-top:15px;
-}
+        /* --- مساحة العرض الرئيسية --- */
+        main {
+            flex-grow: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 160px auto 40px auto; /* إزاحة لكي لا يغطي الهيدر المحتوى */
+            padding: 0 20px;
+        }
 
-.item{
-    background:#0f172a;
-    padding:15px;
-    margin-top:10px;
-    border-radius:12px;
-    border:1px solid rgba(255,255,255,0.08);
-}
+        /* الصفحات الافتراضية (مخفية عدا النشطة) */
+        .page {
+            display: none;
+            animation: slideUp 0.4s ease forwards;
+        }
 
-/* ====== الأقسام ====== */
-.section{
-    padding:60px 20px;
-}
+        .page.active {
+            display: block;
+        }
 
-.title{
-    text-align:center;
-    font-size:24px;
-    margin-bottom:30px;
-}
+        /* كروت وتنسيقات المحتوى الداخلي */
+        .page-title {
+            font-size: 28px;
+            color: var(--text-bright);
+            margin-bottom: 25px;
+            border-right: 4px solid var(--accent-color);
+            padding-right: 15px;
+        }
 
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:15px;
-    max-width:1000px;
-    margin:auto;
-}
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
 
-.box{
-    background:#0f172a;
-    padding:20px;
-    border-radius:14px;
-    border:1px solid rgba(255,255,255,0.08);
-    transition:0.3s;
-}
+        .card {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            transition: transform var(--transition-speed), border-color var(--transition-speed);
+            position: relative;
+            overflow: hidden;
+        }
 
-.box:hover{
-    transform:translateY(-5px);
-    border-color:#4cc9f0;
-}
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
 
-/* ====== موبايل ====== */
-@media(max-width:768px){
+        .card h3 {
+            color: var(--text-bright);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    nav{
-        display:none;
-    }
+        .card p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #8b949e;
+        }
 
-    .hero h1{
-        font-size:24px;
-    }
+        .badge {
+            background: rgba(0, 255, 102, 0.1);
+            color: var(--accent-color);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
 
-    .search{
-        flex-direction:column;
-    }
+        /* أنيميشن */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    .search button{
-        width:100%;
-    }
-}
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-</style>
-
+        /* متوافق مع الهواتف */
+        @media (max-width: 600px) {
+            .header-bottom {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            .dropdown-btn, .search-container {
+                width: 100%;
+            }
+            main {
+                margin-top: 220px;
+            }
+        }
+    </style>
 </head>
-
 <body>
 
-<header>
+    <header>
+        <div class="header-container">
+            <div class="header-top">
+                <div class="logo">
+                    <i class="fa-solid fa-truck-monster"></i>
+                    <span>تكنو شاحنات الاحترافي</span>
+                </div>
+            </div>
+            <div class="header-bottom">
+                <div class="dropdown" id="pagesDropdown">
+                    <button class="dropdown-btn" onclick="toggleDropdown()">
+                        <i class="fa-solid fa-bars"></i> أقسام المركز الرئيسي <i class="fa-solid fa-chevron-down" style="font-size: 12px;"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="#" onclick="showPage('home')"><i class="fa-solid fa-house text-accent"></i>الرئيسية</a>
+                        <a href="#" onclick="showPage('fault-codes')"><i class="fa-solid fa-barcode"></i>أكواد الأعطال (DTC)</a>
+                        <a href="#" onclick="showPage('main-faults')"><i class="fa-solid fa-triangle-exclamation"></i>أهم الأعطال الشائعة</a>
+                        <a href="#" onclick="showPage('ecu-controllers')"><i class="fa-solid fa-microchip"></i>الكنترولات (ECUs)</a>
+                        <a href="#" onclick="showPage('diagrams')"><i class="fa-solid fa-bezier-curve"></i>المخططات الكهربائية</a>
+                        <a href="#" onclick="showPage('books')"><i class="fa-solid fa-book"></i>كتب دليل الصيانة</a>
+                    </div>
+                </div>
 
-<div class="logo">AutoDiag</div>
+                <div class="search-container">
+                    <input type="text" class="search-input" id="globalSearch" placeholder="ابحث عن كود عطل، مخطط، أو كنترول..." onkeyup="liveSearch()">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                </div>
+            </div>
+        </div>
+    </header>
 
-<nav>
-<a href="#">الرئيسية</a>
-<a href="#">الأكواد</a>
-<a href="#">الكنترولات</a>
-<a href="#">الحساسات</a>
-</nav>
+    <main>
+        
+        <section id="home" class="page active">
+            <h2 class="page-title">مرحباً بك في منصة هندسة الشاحنات</h2>
+            <div class="card" style="margin-bottom: 20px;">
+                <h3><i class="fa-solid fa-laptop-medical"></i> نظام الفحص المتكامل</h3>
+                <p>اختر القسم المطلوب من القائمة المنسدلة في الأعلى للوصول إلى أكواد المخططات، ملفات الكنترول، أو الكتب التعليمية. يمكنك استخدام نظام البحث السريع للوصول إلى أي معلومة فوراً.</p>
+            </div>
+        </section>
 
-</header>
+        <section id="fault-codes" class="page">
+            <h2 class="page-title">أكواد الأعطال (Fault Codes)</h2>
+            <div class="grid-container search-target">
+                <div class="card searchable">
+                    <h3>MR 0404</h3>
+                    <p>عطل في خط بيانات كان باص (CAN Bus Error) الخاص بالتحكم في المحرك.</p>
+                    <span class="badge">Mercedes Actros</span>
+                </div>
+                <div class="card searchable">
+                    <h3>GS 10</div>
+                    <h3>GS 1011</h3>
+                    <p>خطأ في حساس وحدة اختيار الغيارات (Gear Control Sensor).</p>
+                    <span class="badge">جير الكتروني</span>
+                </div>
+                <div class="card searchable">
+                    <h3>BS 4345</h3>
+                    <p>مشكلة في إشارة مستشعر ضغط الفرامل (ABS/BS Control).</p>
+                    <span class="badge">نظام الفرامل</span>
+                </div>
+            </div>
+        </section>
 
-<!-- ====== HERO ====== -->
-<section class="hero">
+        <section id="main-faults" class="page">
+            <h2 class="page-title">أهم الأعطال الكهربائية الشائعة</h2>
+            <div class="grid-container search-target">
+                <div class="card searchable">
+                    <h3>ضعف سحب الشاحنة المفاجئ</h3>
+                    <p>غالباً بسبب تهريب هواء في منظومة التيربو أو خلل في كهرباء بلف الـ EGR أو حساس الضغط.</p>
+                    <span class="badge">أعطال المحرك</span>
+                </div>
+                <div class="card searchable">
+                    <h3>تجمد غيارات الجير (Neutral Sticking)</h3>
+                    <p>ينتج عن ضعف ضغط الهواء المغذي للبلف الرئيسي أو تلف في ضفيرة بلف الجير السفلي.</p>
+                    <span class="badge">ناقل الحركة</span>
+                </div>
+            </div>
+        </section>
 
-<h1>نظام تشخيص كهرباء السيارات</h1>
-<p>ابحث عن أي كود أو حساس أو كنترول بسرعة</p>
+        <section id="ecu-controllers" class="page">
+            <h2 class="page-title">أنظمة وكنترولات الشاحنة (ECUs)</h2>
+            <div class="grid-container search-target">
+                <div class="card searchable">
+                    <h3>كنترول المحرك (MR / PLD)</h3>
+                    <p>المسؤول عن توقيت حقن الوقود، وتشغيل البخاخات، ومراقبة حرارة وضغط الزيت.</p>
+                    <span class="badge">شاحنات مرسيدس</span>
+                </div>
+                <div class="card searchable">
+                    <h3>كنترول التنسيق العام (CPC / FMR)</h3>
+                    <p>بوابة الربط بين دعسة الوقود والكنترولات الأخرى وتوزيع إشارات السرعة.</p>
+                    <span class="badge">التحكم المركزي</span>
+                </div>
+            </div>
+        </section>
 
-<div class="search">
-<input id="searchInput" placeholder="مثال: MR 4040">
-<button onclick="search()">بحث</button>
-</div>
+        <section id="diagrams" class="page">
+            <h2 class="page-title">المخططات الكهربائية (Wiring Diagrams)</h2>
+            <div class="grid-container search-target">
+                <div class="card searchable">
+                    <h3>مخطط ضفيرة الإشعال وبلوف البخاخات</h3>
+                    <p>مخطط تفصيلي للألوان والأرقام الخاصة بأسلاك البخاخات الستة من الكنترول إلى المحرك.</p>
+                    <span class="badge">PDF دقة عالية</span>
+                </div>
+                <div class="card searchable">
+                    <h3>مخطط شبكة الـ CAN-Bus الرئيسية</h3>
+                    <p>توزيع المقاومات (120 أوم) ونقاط الاتصال بين كنترول الإشارات الـ GM وكنترول الـ مرسيدس.</p>
+                    <span class="badge">مخطط نظامي</span>
+                </div>
+            </div>
+        </section>
 
-<div class="results" id="results"></div>
+        <section id="books" class="page">
+            <h2 class="page-title">مكتبة كتب صيانة الشاحنات</h2>
+            <div class="grid-container search-target">
+                <div class="card searchable">
+                    <h3>دليل تشخيص أعطال كمبيوتر الأكتروس</h3>
+                    <p>كتاب شامل يشرح قراءة المخططات واستخدام أجهزة فحص الـ Xentry و DAS خطوة بخطوة.</p>
+                    <span class="badge">تحميل مباشر</span>
+                </div>
+                <div class="card searchable">
+                    <h3>موسوعة صيانة كهرباء وميكانيك المضخات</h3>
+                    <p>شرح المنظومات الكهربائية والهيدروليكية المشتركة لمضخات الخرسانة والشاحنات الثقيلة.</p>
+                    <span class="badge">باللغة العربية</span>
+                </div>
+            </div>
+        </section>
 
-</section>
+    </main>
 
-<!-- ====== SECTIONS ====== -->
-<section class="section">
+    <script>
+        // فتح وإغلاق القائمة المنسدلة
+        function toggleDropdown() {
+            document.getElementById("pagesDropdown").classList.toggle("active");
+        }
 
-<div class="title">الأقسام الرئيسية</div>
+        // إغلاق القائمة إذا ضغط المستخدم خارجها
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropdown-btn') && !event.target.matches('.dropdown-btn *')) {
+                var dropdowns = document.getElementsByClassName("dropdown");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('active')) {
+                        openDropdown.classList.remove('active');
+                    }
+                }
+            }
+        }
 
-<div class="grid">
+        // التنقل بين الصفحات في نفس الملف (SPA)
+        function showPage(pageId) {
+            // إخفاء كل الصفحات
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
 
-<div class="box">
-<h3>أكواد الأعطال</h3>
-</div>
+            // إظهار الصفحة المطلوبة
+            const activePage = document.getElementById(pageId);
+            if(activePage) {
+                activePage.classList.add('active');
+            }
 
-<div class="box">
-<h3>الكنترولات</h3>
-</div>
+            // تصفير البحث عند الانتقال لصفحة جديدة
+            document.getElementById('globalSearch').value = '';
+            liveSearch();
+        }
 
-<div class="box">
-<h3>الحساسات</h3>
-</div>
+        // محرك البحث الخرافي والذكي (يعمل بشكل حيوي على كل الكروت)
+        function liveSearch() {
+            let filter = document.getElementById('globalSearch').value.toLowerCase();
+            let cards = document.querySelectorAll('.searchable');
+            
+            cards.forEach(card => {
+                let text = card.textContent || card.innerText;
+                if (text.toLowerCase().indexOf(filter) > -1) {
+                    card.style.display = ""; // إظهار الكرت إذا كان يطابق البحث
+                } else {
+                    card.style.display = "none"; // إخفائه إن لم يطابق
+                }
+            });
 
-<div class="box">
-<h3>المخططات</h3>
-</div>
-
-</div>
-
-</section>
-
-<script>
-
-const data = [
-{
-name:"MR 4040",
-desc:"خلل في ضغط الوقود"
-},
-{
-name:"FR 3130",
-desc:"مشكلة اتصال CAN"
-},
-{
-name:"CPC 1110",
-desc:"انخفاض جهد التغذية"
-}
-];
-
-function search(){
-
-let val =
-document.getElementById("searchInput").value.toLowerCase();
-
-let res =
-document.getElementById("results");
-
-res.innerHTML="";
-
-let found =
-data.filter(x =>
-x.name.toLowerCase().includes(val)
-);
-
-if(found.length==0){
-res.innerHTML="<div class='item'>لا توجد نتائج</div>";
-return;
-}
-
-found.forEach(x=>{
-res.innerHTML +=
-`<div class="item">
-<b>${x.name}</b><br>
-${x.desc}
-</div>`;
-});
-
-}
-
-</script>
-
+            // ميزة إضافية: إذا كتب المستخدم شيئاً، يتم الانتقال تلقائياً للقسم المناسب أو فتح كل المحتوى للمعاينة
+            if(filter.length > 0) {
+                 // يمكنك ترك الصفحات كما هي والبحث يبحث داخل الصفحة المفتوحة بقوة
+            }
+        }
+    </script>
 </body>
 </html>
