@@ -7,55 +7,59 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-color: #0d1117;
-            --panel-bg: #161b22;
+            --bg-color: #0b0f17;
+            --panel-bg: #131a26;
             --accent-color: #00ff66;
-            --text-color: #c9d1d9;
+            --text-color: #94a3b8;
             --text-bright: #ffffff;
-            --border-color: #30363d;
-            --transition-speed: 0.3s;
+            --border-color: #1e293b;
+            --transition-speed: 0.25s;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; }
         
-        header { position: fixed; top: 0; left: 0; width: 100%; background-color: rgba(22, 27, 34, 0.95); backdrop-filter: blur(10px); border-bottom: 2px solid var(--border-color); z-index: 1000; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); }
-        .header-container { max-width: 1200px; margin: 0 auto; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+        header { position: fixed; top: 0; left: 0; width: 100%; background-color: rgba(19, 26, 38, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color); z-index: 1000; }
+        .header-container { max-width: 1200px; margin: 0 auto; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; gap: 15px; }
         
-        .right-side { display: flex; align-items: center; gap: 20px; }
-        .logo { font-size: 26px; font-weight: 900; color: var(--text-bright); display: flex; align-items: center; gap: 8px; text-shadow: 0 0 10px rgba(0, 255, 102, 0.3); letter-spacing: 1px; }
-        .logo i { color: var(--accent-color); }
+        .right-side { display: flex; align-items: center; gap: 12px; }
+        .logo { font-size: 24px; font-weight: 900; color: var(--text-bright); letter-spacing: 1.5px; text-shadow: 0 0 12px rgba(0, 255, 102, 0.2); }
         
-        .dropdown { position: relative; display: inline-block; }
-        .dropdown-btn { background-color: var(--panel-bg); color: var(--text-bright); padding: 10px 20px; font-size: 15px; font-weight: 600; border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all var(--transition-speed); }
-        .dropdown-btn:hover { border-color: var(--accent-color); box-shadow: 0 0 10px rgba(0, 255, 102, 0.2); }
-        .dropdown-content { display: none; position: absolute; right: 0; background-color: var(--panel-bg); min-width: 220px; box-shadow: 0px 8px 24px rgba(0,0,0,0.6); border: 1px solid var(--border-color); border-radius: 8px; z-index: 1; margin-top: 5px; overflow: hidden; }
-        .dropdown-content a { color: var(--text-color); padding: 12px 16px; text-decoration: none; display: flex; align-items: center; gap: 12px; transition: all var(--transition-speed); }
-        .dropdown-content a:hover { background-color: rgba(0, 255, 102, 0.1); color: var(--accent-color); }
-        .dropdown.active .dropdown-content { display: block; animation: fadeIn 0.3s ease; }
+        .dropdown { position: relative; }
+        .dropdown-btn { background: none; color: var(--text-color); font-size: 20px; border: none; cursor: pointer; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all var(--transition-speed); }
+        .dropdown-btn:hover { color: var(--accent-color); background-color: rgba(255, 255, 255, 0.05); }
+        .dropdown-content { display: none; position: absolute; right: 0; background-color: var(--panel-bg); min-width: 240px; box-shadow: 0px 10px 30px rgba(0,0,0,0.5); border: 1px solid var(--border-color); border-radius: 12px; z-index: 10; margin-top: 8px; overflow: hidden; }
+        .dropdown-content a { color: var(--text-color); padding: 14px 16px; text-decoration: none; display: flex; align-items: center; gap: 12px; font-weight: 500; transition: all var(--transition-speed); border-bottom: 1px solid rgba(255,255,255,0.02); }
+        .dropdown-content a:hover { background-color: rgba(0, 255, 102, 0.08); color: var(--accent-color); padding: 14px 22px; }
+        .dropdown.active .dropdown-content { display: block; animation: fadeIn 0.2s ease-out; }
         
-        .search-container { position: relative; flex-grow: 1; max-width: 400px; }
-        .search-input { width: 100%; padding: 10px 45px 10px 20px; font-size: 15px; background-color: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 30px; color: var(--text-bright); transition: all var(--transition-speed) ease; }
-        .search-input:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 15px rgba(0, 255, 102, 0.4); }
-        .search-icon { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: #8b949e; }
+        .search-container { position: relative; flex-grow: 1; max-width: 380px; }
+        .search-input { width: 100%; padding: 10px 42px 10px 18px; font-size: 14px; background-color: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-bright); transition: all var(--transition-speed); }
+        .search-input:focus { outline: none; border-color: var(--accent-color); background-color: rgba(255, 255, 255, 0.05); box-shadow: 0 0 15px rgba(0, 255, 102, 0.15); }
+        .search-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 14px; }
         
-        main { flex-grow: 1; max-width: 1200px; width: 100%; margin: 100px auto 40px auto; padding: 0 20px; animation: slideUp 0.4s ease; }
-        .page-title { font-size: 28px; color: var(--text-bright); margin-bottom: 25px; border-right: 4px solid var(--accent-color); padding-right: 15px; }
-        .card { background-color: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 25px; line-height: 1.8; }
-        .card h3 { color: var(--text-bright); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; font-size: 22px; }
-        .card p { color: #8b949e; font-size: 16px; }
+        main { flex-grow: 1; max-width: 1200px; width: 100%; margin: 90px auto 40px auto; padding: 0 20px; animation: slideUp 0.35s ease-out; }
+        .page-title { font-size: 26px; color: var(--text-bright); margin-bottom: 25px; font-weight: 700; position: relative; padding-right: 15px; }
+        .page-title::before { content: ''; position: absolute; right: 0; top: 15%; height: 70%; width: 4px; background-color: var(--accent-color); border-radius: 2px; }
         
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 768px) { .header-container { flex-direction: column; align-items: stretch; gap: 12px; } .right-side { justify-content: space-between; } .search-container { max-width: 100%; } main { margin-top: 170px; } }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .card { background-color: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 22px; transition: all var(--transition-speed); text-decoration: none; display: block; }
+        .card:hover { transform: translateY(-4px); border-color: var(--accent-color); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); }
+        .card h3 { color: var(--text-bright); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; font-size: 18px; }
+        .card h3 i { color: var(--accent-color); }
+        .card p { color: #64748b; font-size: 14px; line-height: 1.6; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 500px) { .header-container { padding: 10px 15px; } .logo { font-size: 20px; } main { margin-top: 80px; } }
     </style>
 </head>
 <body>
     <header>
         <div class="header-container">
             <div class="right-side">
-                <div class="logo"><i class="fa-solid fa-microchip"></i><span>DAS</span></div>
+                <div class="logo">DAS</div>
                 <div class="dropdown" id="pagesDropdown">
-                    <button class="dropdown-btn" onclick="toggleDropdown()"><i class="fa-solid fa-bars"></i> الأقسام <i class="fa-solid fa-chevron-down" style="font-size: 11px;"></i></button>
+                    <button class="dropdown-btn" onclick="toggleDropdown()"><i class="fa-solid fa-bars"></i></button>
                     <div class="dropdown-content">
                         <a href="index.html"><i class="fa-solid fa-house"></i>الرئيسية</a>
                         <a href="fault-codes.html"><i class="fa-solid fa-barcode"></i>أكواد الأعطال (DTC)</a>
@@ -67,21 +71,25 @@
                 </div>
             </div>
             <div class="search-container">
-                <input type="text" class="search-input" placeholder="البحث نشط داخل الأقسام فقط..." disabled>
+                <input type="text" class="search-input" id="globalSearch" placeholder="ابحث عن قسم معين..." onkeyup="liveSearch()">
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
             </div>
         </div>
     </header>
     <main>
-        <h2 class="page-title">مرحباً بك في منصة DAS لهندسة الشاحنات</h2>
-        <div class="card">
-            <h3><i class="fa-solid fa-laptop-medical"></i> نظام الفحص المتكامل للورش الذكية</h3>
-            <p>اختر القسم المطلوب من قائمة الأقسام العلوية للوصول إلى البيانات. نظام البحث التلقائي مدعوم بالكامل داخل كل الصفحات الفرعية لمساعدتك في الوصول للمعلومة فوراً أثناء الكتابة.</p>
+        <h2 class="page-title">منصة الهندسة والصيانة الرقمية</h2>
+        <div class="grid-container">
+            <a href="fault-codes.html" class="card searchable"><h3><i class="fa-solid fa-barcode"></i> أكواد الأعطال (DTC)</h3><p>البحث السريع والتلقائي عن كافة رموز وأكواد شاحنات مرسيدس أكتروس والأنظمة الحركية.</p></a>
+            <a href="main-faults.html" class="card searchable"><h3><i class="fa-solid fa-triangle-exclamation"></i> أهم الأعطال الشائعة</h3><p>رصد ومتابعة المشاكل الميدانية الأكثر تكراراً في الأجهزة والضفائر وحلولها السريعة.</p></a>
+            <a href="ecu-controllers.html" class="card searchable"><h3><i class="fa-solid fa-microchip"></i> الكنترولات (ECUs)</h3><p>دليل وظائف العقول والكمبيوترات الأساسية والفرعية داخل الشاحنة ووحدات التحكم.</p></a>
+            <a href="diagrams.html" class="card searchable"><h3><i class="fa-solid fa-bezier-curve"></i> المخططات الكهربائية</h3><p>خرائط وتوزيع الأسلاك الكهربائية، مسارات شبكة الـ CAN-Bus ونقاط التأريض.</p></a>
+            <a href="books.html" class="card searchable"><h3><i class="fa-solid fa-book"></i> كتب دليل الصيانة</h3><p>مكتبة المراجع والكتالوجات الفنية المتكاملة لصيانة وإصلاح الأنظمة الهيدروليكية والميكانيكية.</p></a>
         </div>
     </main>
     <script>
         function toggleDropdown() { document.getElementById("pagesDropdown").classList.toggle("active"); }
         window.onclick = function(event) { if (!event.target.matches('.dropdown-btn') && !event.target.matches('.dropdown-btn *')) { var dropdowns = document.getElementsByClassName("dropdown"); for (var i = 0; i < dropdowns.length; i++) { if (dropdowns[i].classList.contains('active')) dropdowns[i].classList.remove('active'); } } }
+        function liveSearch() { let filter = document.getElementById('globalSearch').value.toLowerCase(); let cards = document.querySelectorAll('.searchable'); cards.forEach(card => { let text = card.textContent || card.innerText; card.style.display = text.toLowerCase().indexOf(filter) > -1 ? "" : "none"; }); }
     </script>
 </body>
 </html>
