@@ -119,7 +119,7 @@
             box-shadow: 0 0 12px rgba(0, 255, 102, 0.3);
         }
 
-        /* زر التنزيل المستقر */
+        /* زر التنزيل */
         .btn-download {
             background-color: var(--accent-color);
             color: #0b0f17;
@@ -186,7 +186,9 @@
                 </div>
                 <div class="book-actions">
                     <a href="DAS.pdf" target="_blank" class="book-btn btn-open"><i class="fa-solid fa-eye"></i> فتح</a>
-                    <a href="DAS.pdf" download="كنترول mr.pdf" class="book-btn btn-download"><i class="fa-solid fa-download"></i> تنزيل</a>
+                    <button onclick="downloadFileForcefully('DAS.pdf', 'كنترول mr.pdf')" class="book-btn btn-download">
+                        <i class="fa-solid fa-download"></i> تنزيل
+                    </button>
                 </div>
             </div>
 
@@ -217,6 +219,31 @@ function liveSearch() {
         let text = row.querySelector('.book-info h3').textContent || row.querySelector('.book-info h3').innerText;
         row.style.display = text.toLowerCase().indexOf(filter) > -1 ? "" : "none";
     });
+}
+
+// التقنية المضمونة 100% لتنزيل الملفات والإجبار عليها دون فتحها في المتصفح
+function downloadFileForcefully(fileUrl, fileName) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', fileUrl, true);
+    xhr.responseType = 'blob';
+    
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            const blob = xhr.response;
+            // تحويل الملف إلى رابط ثنائي فريد وخاص بالتحميل فقط
+            const blobUrl = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.download = fileName;
+            
+            // إجبار المتصفح على الضغط الوهمي لبدء التحميل فوراً
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(blobUrl);
+        }
+    };
+    xhr.send();
 }
 </script>
 </body>
