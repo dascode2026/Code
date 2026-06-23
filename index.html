@@ -60,31 +60,32 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <div class="right-side">
-                <!-- تم تقديم القائمة المنسدلة لتظهر أولاً -->
-                <div class="dropdown" id="pagesDropdown">
-                    <button class="dropdown-btn" onclick="toggleDropdown()"><i class="fa-solid fa-bars"></i></button>
-                    <div class="dropdown-content">
-                        <a href="index.html"><i class="fa-solid fa-house"></i>الرئيسية</a>
-                        <a href="fault-codes.html"><i class="fa-solid fa-barcode"></i>أكواد الأعطال (DTC)</a>
-                        <a href="main-faults.html"><i class="fa-solid fa-triangle-exclamation"></i>أهم الأعطال الشائعة</a>
-                        <a href="ecu-controllers.html"><i class="fa-solid fa-microchip"></i>الكنترولات (ECUs)</a>
-                        <a href="diagrams.html"><i class="fa-solid fa-bezier-curve"></i>المخططات الكهربائية</a>
-                        <a href="books.html"><i class="fa-solid fa-book"></i>كتب دليل الصيانة</a>
-                    </div>
-                </div>
-                <!-- اسم الموقع يظهر الآن بعد القائمة المنسدلة -->
-                <div class="logo">DAS</div>
-            </div>
-            <div class="search-container">
-                <input type="text" class="search-input" id="globalSearch" placeholder="ابحث عن أكواد، أعطال أو مخططات..." onkeyup="globalSystemSearch()">
-                <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <div class="search-results-dropdown" id="searchResults"></div>
-            </div>
-        </div>
-    </header>
+   <script>
+// دالة التشغيل الذكية الموحدة للبحث
+function executeSmartSearch() {
+    let filter = document.getElementById('globalSearch').value.toLowerCase();
+    
+    // 1. إذا كنا في صفحة الكتب (تصفية فورية لعناصر الصفحة)
+    if (typeof liveSearch === "function") {
+        liveSearch();
+    }
+    
+    // 2. تشغيل البحث العام للقائمة المنسدلة (إذا كانت الدالة والمصفوفة موجودتين)
+    if (typeof globalSystemSearch === "function") {
+        let resultsDropdown = document.getElementById('searchResults');
+        
+        // إذا كنا في صفحة الكتب، نتحقق أولاً إن كان الكتاب مكتوباً بالصفحة لمنع تكرار المنسدلة
+        let hasLocalRows = document.querySelectorAll('.searchable').length > 0;
+        if (hasLocalRows) {
+            resultsDropdown.style.display = "none";
+            return; 
+        }
+        
+        globalSystemSearch();
+    }
+}
+</script>
+
     <main>
         <h2 class="page-title">منصة الهندسة والصيانة الرقمية</h2>
         <div class="grid-container">
@@ -95,10 +96,11 @@
             <a href="books.html" class="card"><h3><i class="fa-solid fa-book"></i> كتب دليل الصيانة</h3><p>مكتبة المراجع والكتالوجات الفنية المتكاملة لصيانة وإصلاح الأنظمة الهيدروليكية والميكانيكية.</p></a>
         </div>
     </main>
-    <script>
+   <script>
         function toggleDropdown() { document.getElementById("pagesDropdown").classList.toggle("active"); }
         window.onclick = function(event) { if (!event.target.matches('.dropdown-btn') && !event.target.matches('.dropdown-btn *')) { var dropdowns = document.getElementsByClassName("dropdown"); for (var i = 0; i < dropdowns.length; i++) { if (dropdowns[i].classList.contains('active')) dropdowns[i].classList.remove('active'); } } if (!event.target.matches('#globalSearch')) { document.getElementById('searchResults').style.display = "none"; } }
         
+        // مصفوفة البيانات: أي كتاب أو عطل جديد تريد أن يظهر في البحث المنسدل يجب أن تضيفه هنا
         const siteDatabase = [
             { id: "mr0404", title: "MR 0404", text: "عطل في خط بيانات كان باص (CAN Bus Error) الخاص بالمحرك", page: "fault-codes.html", cat: "أكواد الأعطال (DTC)" },
             { id: "gs1011", title: "GS 1011", text: "خطأ قراءة حساس وحدة اختيار الغيارات والتنسيق للجير", page: "fault-codes.html", cat: "أكواد الأعطال (DTC)" },
@@ -114,7 +116,11 @@
             { id: "diag2", title: "مخطط شبكة الـ CAN-Bus ونقاط الاتصال", text: "مسارات توزيع المقاومات القياسية 120 أوم للتوصيل البيني الذكي", page: "diagrams.html", cat: "المخططات الكهربائية" },
             { id: "diag3", title: "مخطط التغذية الأرضية والسالبة للغرفة", text: "توزيع نقاط التأريض لمنع حدوث التماسات أو قراءات عشوائية خاطئة", page: "diagrams.html", cat: "المخططات الكهربائية" },
             { id: "book1", title: "دليل تشخيص وهندسة أعطال الأكتروس", text: "مرجع متكامل يشرح آلية قراءة الأخطاء وتحليلها بأنظمة Xentry/DAS", page: "books.html", cat: "كتب دليل الصيانة" },
-            { id: "book2", title: "موسوعة صيانة أنظمة وضفائر مضخات الخرسانة", text: "كتاب مهني مخصص لتتبع المسارات الهيدروليكية والكهربائية المشتركة", page: "books.html", cat: "كتب دليل الصيانة" }
+            { id: "book2", title: "موسوعة صيانة أنظمة وضفائر مضخات الخرسانة", text: "كتاب مهني مخصص لتتبع المسارات الهيدروليكية والكهربائية المشتركة", page: "books.html", cat: "كتب دليل الصيانة" },
+            
+            // الكتاب الجديد الذي طلبته تم إضافته هنا:
+            { id: "book3", title: "كنترول FM", text: "دليل صيانة وتشخيص نظام الشاحنات ووحدات التحكم من نوع FM", page: "books.html", cat: "كتب دليل الصيانة" },
+            { id: "book4", title: "كنترول mr", text: "كتاب صيانة وفحص ضفيرة كمبيوتر المحرك MR بالتفصيل", page: "books.html", cat: "كتب دليل الصيانة" }
         ];
 
         function globalSystemSearch() {
@@ -135,5 +141,6 @@
             } else { resultsDropdown.style.display = "none"; }
         }
     </script>
+
 </body>
 </html>
