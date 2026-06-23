@@ -51,28 +51,35 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <div class="right-side">
-                <div class="logo">DAS</div>
-                <div class="dropdown" id="pagesDropdown">
-                    <button class="dropdown-btn" onclick="toggleDropdown()"><i class="fa-solid fa-bars"></i></button>
-                    <div class="dropdown-content">
-                        <a href="index.html"><i class="fa-solid fa-house"></i>الرئيسية</a>
-                        <a href="fault-codes.html"><i class="fa-solid fa-barcode"></i>أكواد الأعطال (DTC)</a>
-                        <a href="main-faults.html"><i class="fa-solid fa-triangle-exclamation"></i>أهم الأعطال الشائعة</a>
-                        <a href="ecu-controllers.html"><i class="fa-solid fa-microchip"></i>الكنترولات (ECUs)</a>
-                        <a href="diagrams.html"><i class="fa-solid fa-bezier-curve"></i>المخططات الكهربائية</a>
-                        <a href="books.html"><i class="fa-solid fa-book"></i>كتب دليل الصيانة</a>
-                    </div>
+  <header>
+    <div class="header-container">
+        <div class="right-side">
+            <!-- 1. القائمة المنسدلة (في أقصى اليمين) -->
+            <div class="dropdown" id="pagesDropdown">
+                <button class="dropdown-btn" onclick="toggleDropdown()"><i class="fa-solid fa-bars"></i></button>
+                <div class="dropdown-content">
+                    <a href="index.html"><i class="fa-solid fa-house"></i>الرئيسية</a>
+                    <a href="fault-codes.html"><i class="fa-solid fa-barcode"></i>أكواد الأعطال (DTC)</a>
+                    <a href="main-faults.html"><i class="fa-solid fa-triangle-exclamation"></i>أهم الأعطال الشائعة</a>
+                    <a href="ecu-controllers.html"><i class="fa-solid fa-microchip"></i>الكنترولات (ECUs)</a>
+                    <a href="diagrams.html"><i class="fa-solid fa-bezier-curve"></i>المخططات الكهربائية</a>
+                    <a href="books.html"><i class="fa-solid fa-book"></i>كتب دليل الصيانة</a>
                 </div>
             </div>
-            <div class="search-container">
-                <input type="text" class="search-input" id="globalSearch" placeholder="ابحث في هذه الصفحة..." onkeyup="liveSearch()">
-                <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            </div>
+            
+            <!-- 2. اسم الموقع (بجانب القائمة) -->
+            <div class="logo">DAS</div>
         </div>
-    </header>
+        
+        <!-- 3. صندوق البحث (في اليسار) -->
+        <div class="search-container">
+            <input type="text" class="search-input" id="globalSearch" placeholder="ابحث..." onkeyup="typeof globalSystemSearch === 'function' ? globalSystemSearch() : liveSearch()">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <div class="search-results-dropdown" id="searchResults"></div>
+        </div>
+    </div>
+</header>
+
     <div class="sub-header">
         <span>الرئيسية</span> <i class="fa-solid fa-chevron-left"></i> <span class="current-page">أهم الأعطال الشائعة</span>
     </div>
