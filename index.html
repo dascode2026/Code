@@ -63,7 +63,7 @@
     <header>
         <div class="header-container">
             <div class="right-side">
-                <div class="logo">DAS</div>
+                <!-- تم تقديم القائمة المنسدلة لتظهر أولاً -->
                 <div class="dropdown" id="pagesDropdown">
                     <button class="dropdown-btn" onclick="toggleDropdown()"><i class="fa-solid fa-bars"></i></button>
                     <div class="dropdown-content">
@@ -75,6 +75,8 @@
                         <a href="books.html"><i class="fa-solid fa-book"></i>كتب دليل الصيانة</a>
                     </div>
                 </div>
+                <!-- اسم الموقع يظهر الآن بعد القائمة المنسدلة -->
+                <div class="logo">DAS</div>
             </div>
             <div class="search-container">
                 <input type="text" class="search-input" id="globalSearch" placeholder="ابحث عن أكواد، أعطال أو مخططات..." onkeyup="globalSystemSearch()">
