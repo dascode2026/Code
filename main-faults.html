@@ -1,116 +1,254 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DAS | أهم الأعطال</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root { --bg-color: #0b0f17; --panel-bg: #131a26; --accent-color: #00ff66; --text-color: #94a3b8; --text-bright: #ffffff; --border-color: #1e293b; --transition-speed: 0.25s; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg-color); color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; }
-        
-        header { position: fixed; top: 0; left: 0; width: 100%; background-color: rgba(19, 26, 38, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color); z-index: 1000; }
-        .header-container { max-width: 1200px; margin: 0 auto; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; gap: 15px; }
-        .right-side { display: flex; align-items: center; gap: 12px; }
-        .logo { font-size: 24px; font-weight: 900; color: var(--text-bright); letter-spacing: 1.5px; }
-        
-        .sub-header { position: fixed; top: 65px; left: 0; width: 100%; background-color: #111722; padding: 8px 20px; border-bottom: 1px solid var(--border-color); z-index: 999; font-size: 13px; color: var(--accent-color); font-weight: 600; display: flex; align-items: center; gap: 8px; }
-        .sub-header i { font-size: 11px; color: var(--text-color); }
-        .sub-header span.current-page { color: var(--text-bright); }
+<meta charset="UTF-8">
+<title>فاتورة مبيعات</title>
 
-        .dropdown { position: relative; }
-        .dropdown-btn { background: none; color: var(--text-color); font-size: 20px; border: none; cursor: pointer; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all var(--transition-speed); }
-        .dropdown-btn:hover { color: var(--accent-color); background-color: rgba(255, 255, 255, 0.05); }
-        .dropdown-content { display: none; position: absolute; right: 0; background-color: var(--panel-bg); min-width: 240px; box-shadow: 0px 10px 30px rgba(0,0,0,0.5); border: 1px solid var(--border-color); border-radius: 12px; z-index: 10; margin-top: 8px; overflow: hidden; }
-        .dropdown-content a { color: var(--text-color); padding: 14px 16px; text-decoration: none; display: flex; align-items: center; gap: 12px; transition: all var(--transition-speed); border-bottom: 1px solid rgba(255,255,255,0.02); }
-        .dropdown-content a:hover { background-color: rgba(0, 255, 102, 0.08); color: var(--accent-color); padding: 14px 22px; }
-        .dropdown.active .dropdown-content { display: block; animation: fadeIn 0.2s ease-out; }
-        
-        .search-container { position: relative; flex-grow: 1; max-width: 380px; }
-        .search-input { width: 100%; padding: 10px 42px 10px 18px; font-size: 14px; background-color: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-bright); transition: all var(--transition-speed); }
-        .search-input:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 15px rgba(0, 255, 102, 0.15); }
-        .search-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #64748b; }
-        
-        main { flex-grow: 1; max-width: 1200px; width: 100%; margin: 130px auto 40px auto; padding: 0 20px; animation: slideUp 0.35s ease-out; }
-        .page-title { font-size: 26px; color: var(--text-bright); margin-bottom: 25px; position: relative; padding-right: 15px; font-weight: 700; }
-        .page-title::before { content: ''; position: absolute; right: 0; top: 15%; height: 70%; width: 4px; background-color: var(--accent-color); border-radius: 2px; }
-        
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .card { background-color: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 22px; transition: all var(--transition-speed); scroll-margin-top: 140px; }
-        .card:hover { transform: translateY(-4px); border-color: var(--accent-color); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); }
-        .card h3 { color: var(--text-bright); margin-bottom: 10px; font-size: 18px; }
-        .card p { font-size: 14px; line-height: 1.6; color: #64748b; }
-        .badge { background: rgba(0, 255, 102, 0.06); color: var(--accent-color); padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-block; margin-top: 12px; border: 1px solid rgba(0, 255, 102, 0.1); }
-        
-        @keyframes flashHighlight { 0% { background-color: rgba(0, 255, 102, 0.25); border-color: var(--accent-color); } 100% { background-color: var(--panel-bg); } }
-        .highlight-card { animation: flashHighlight 2s ease-out; border-color: var(--accent-color) !important; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 500px) { .header-container { padding: 10px 15px; } .logo { font-size: 20px; main { margin-top: 120px; } } }
-    </style>
+<style>
+
+body{
+    margin:0;
+    background:#ddd;
+    font-family:Tahoma;
+}
+
+.page{
+    width:210mm;
+    min-height:297mm;
+    background:#fff;
+    margin:20px auto;
+    position:relative;
+    overflow:hidden;
+}
+
+/* Header */
+
+.header{
+    height:170px;
+    position:relative;
+}
+
+.blue{
+    position:absolute;
+    left:0;
+    top:0;
+    width:60%;
+    height:170px;
+    background:#0d2d63;
+    clip-path:polygon(0 0,100% 0,88% 100%,0 100%);
+}
+
+.gold{
+    position:absolute;
+    right:38%;
+    top:-60px;
+    width:90px;
+    height:260px;
+    background:#c79b2b;
+    transform:rotate(28deg);
+}
+
+.company{
+    position:absolute;
+    left:40px;
+    top:30px;
+    color:#fff;
+}
+
+.company h1{
+    margin:0;
+    font-size:42px;
+}
+
+.company p{
+    margin:5px 0;
+}
+
+.title{
+    position:absolute;
+    right:50px;
+    top:40px;
+    text-align:right;
+}
+
+.title h1{
+    margin:0;
+    color:#0d2d63;
+}
+
+.title span{
+    color:#c79b2b;
+}
+
+/* المعلومات */
+
+.info{
+    display:flex;
+    justify-content:space-between;
+    padding:30px 40px;
+}
+
+.box{
+    width:46%;
+}
+
+.box h3{
+    color:#0d2d63;
+    border-bottom:2px solid #c79b2b;
+    padding-bottom:5px;
+}
+
+/* الجدول */
+
+table{
+    width:90%;
+    margin:auto;
+    border-collapse:collapse;
+}
+
+th{
+    background:#0d2d63;
+    color:white;
+    padding:10px;
+}
+
+td{
+    border:1px solid #ccc;
+    padding:10px;
+    text-align:center;
+}
+
+/* الإجمالي */
+
+.total{
+    width:260px;
+    margin:30px 40px 0 auto;
+}
+
+.total table{
+    width:100%;
+}
+
+.total td{
+    text-align:right;
+}
+
+/* Footer */
+
+.footer{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:70px;
+    background:#0d2d63;
+}
+
+.footer::before{
+    content:"";
+    position:absolute;
+    right:100px;
+    bottom:-90px;
+    width:90px;
+    height:200px;
+    background:#c79b2b;
+    transform:rotate(28deg);
+}
+
+</style>
+
 </head>
-<body>
-  <header>
-    <div class="header-container">
-        <div class="right-side">
-            <!-- 1. القائمة المنسدلة (في أقصى اليمين) -->
-            <div class="dropdown" id="pagesDropdown">
-                <button class="dropdown-btn" onclick="toggleDropdown()"><i class="fa-solid fa-bars"></i></button>
-                <div class="dropdown-content">
-                    <a href="index.html"><i class="fa-solid fa-house"></i>الرئيسية</a>
-                    <a href="fault-codes.html"><i class="fa-solid fa-barcode"></i>أكواد الأعطال (DTC)</a>
-                    <a href="main-faults.html"><i class="fa-solid fa-triangle-exclamation"></i>أهم الأعطال الشائعة</a>
-                    <a href="ecu-controllers.html"><i class="fa-solid fa-microchip"></i>الكنترولات (ECUs)</a>
-                    <a href="diagrams.html"><i class="fa-solid fa-bezier-curve"></i>المخططات الكهربائية</a>
-                    <a href="books.html"><i class="fa-solid fa-book"></i>كتب دليل الصيانة</a>
-                </div>
-            </div>
-            
-            <!-- 2. اسم الموقع (بجانب القائمة) -->
-            <div class="logo">DAS</div>
-        </div>
-        
-        <!-- 3. صندوق البحث (في اليسار) -->
-        <div class="search-container">
-            <input type="text" class="search-input" id="globalSearch" placeholder="ابحث..." onkeyup="typeof globalSystemSearch === 'function' ? globalSystemSearch() : liveSearch()">
-            <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <div class="search-results-dropdown" id="searchResults"></div>
-        </div>
-    </div>
-</header>
 
-    <div class="sub-header">
-        <span>الرئيسية</span> <i class="fa-solid fa-chevron-left"></i> <span class="current-page">أهم الأعطال الشائعة</span>
-    </div>
-    <main>
-        <h2 class="page-title">أهم الأعطال الكهربائية الميدانية والشائعة</h2>
-        <div class="grid-container">
-            <div class="card searchable" id="fault1"><h3>ضعف السحب والتسارع المفاجئ</h3><p>غالباً بسبب تهريب هواء في منظومة شاحن التيربو أو خلل في الأسلاك الكهربائية لبلف الـ EGR أو تلف حساس الضغط المباشر.</p><span class="badge">أعطال المحركات</span></div>
-            <div class="card searchable" id="fault2"><h3>تجمد غيارات ناقل الحركة (Neutral)</h3><p>ينتج عن ضعف مفاجئ في ضغط الهواء المغذي للبلف الرئيسي المتصل بالضفيرة أو تأكسد في تلامسات الفيش السفلي للجير.</p><span class="badge">صيانة ناقل الحركة</span></div>
-            <div class="card searchable" id="fault3"><h3>انقطاع طاقة لوحة التابلوه كاملة</h3><p>سببه الرئيسي تراكم الأملاح على فيوزات التغذية الرئيسية (Master Fuses) أو ماس كهربائي في خط البطاريات الخلفي.</p><span class="badge">كهرباء عامة</span></div>
-        </div>
-    </main>
-    <script>
-        function toggleDropdown() { document.getElementById("pagesDropdown").classList.toggle("active"); }
-        window.onclick = function(event) { if (!event.target.matches('.dropdown-btn') && !event.target.matches('.dropdown-btn *')) { var dropdowns = document.getElementsByClassName("dropdown"); for (var i = 0; i < dropdowns.length; i++) { if (dropdowns[i].classList.contains('active')) dropdowns[i].classList.remove('active'); } } }
-        function liveSearch() { let filter = document.getElementById('globalSearch').value.toLowerCase(); let cards = document.querySelectorAll('.searchable'); cards.forEach(card => { let text = card.textContent || card.innerText; card.style.display = text.toLowerCase().indexOf(filter) > -1 ? "" : "none"; }); }
-        
-        window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const targetId = urlParams.get('target');
-            const searchQuery = urlParams.get('searchQuery');
-            if (searchQuery) { document.getElementById('globalSearch').value = decodeURIComponent(searchQuery); liveSearch(); }
-            if (targetId) {
-                const element = document.getElementById(targetId);
-                if (element) {
-                    setTimeout(() => {
-                        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        element.classList.add('highlight-card');
-                    }, 350);
-                }
-            }
-        }
-    </script>
+<body>
+
+<div class="page">
+
+<div class="header">
+
+<div class="blue"></div>
+<div class="gold"></div>
+
+<div class="company">
+<h1>نجوم</h1>
+<p>لقطع الغيار</p>
+<p>الرياض</p>
+<p>0551234567</p>
+</div>
+
+<div class="title">
+<h1>فاتورة مبيعات</h1>
+<span>SALES INVOICE</span>
+</div>
+
+</div>
+
+<div class="info">
+
+<div class="box">
+<h3>بيانات العميل</h3>
+<p>الاسم : مؤسسة الخليج</p>
+<p>الهاتف : 0500000000</p>
+<p>المدينة : الرياض</p>
+</div>
+
+<div class="box">
+<h3>بيانات الفاتورة</h3>
+<p>رقم الفاتورة : INV-001</p>
+<p>التاريخ : 28-06-2026</p>
+<p>طريقة الدفع : نقداً</p>
+</div>
+
+</div>
+
+<table>
+
+<tr>
+<th>الصنف</th>
+<th>الوحدة</th>
+<th>الكمية</th>
+<th>السعر</th>
+<th>الإجمالي</th>
+</tr>
+
+<tr>
+<td>فلتر زيت</td>
+<td>حبة</td>
+<td>5</td>
+<td>35</td>
+<td>175</td>
+</tr>
+
+</table>
+
+<div class="total">
+
+<table>
+
+<tr>
+<td>الإجمالي</td>
+<td>175 ريال</td>
+</tr>
+
+<tr>
+<td>الخصم</td>
+<td>0 ريال</td>
+</tr>
+
+<tr>
+<td><b>الصافي</b></td>
+<td><b>175 ريال</b></td>
+</tr>
+
+</table>
+
+</div>
+
+<div style="padding:40px">
+شكراً لتعاملكم مع نجوم لقطع الغيار
+</div>
+
+<div class="footer"></div>
+
+</div>
+
 </body>
 </html>
